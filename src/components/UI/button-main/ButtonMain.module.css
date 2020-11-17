@@ -1,0 +1,20 @@
+.ButtonMain {
+  margin-bottom: 10px;
+}
+
+.ButtonMain button {
+  background-color: rgb(65, 135, 192);
+  width: 150px;
+  height: 60px;
+  font-size: 20px;
+  transition: .6s;
+}
+
+.ButtonMainBlack {
+  composes: ButtonMain;
+}
+
+.ButtonMainBlack button {
+  background-color: #2F4F4F;
+  transition: .6s;
+}

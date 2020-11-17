@@ -1,0 +1,53 @@
+.Footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  bottom: 0;
+  width: 100%;
+  height: 10%;
+  border-top: 1px solid #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: #000214;
+  padding: 15px;
+  margin: 0;
+  transition: 0.6s;
+}
+
+.FooterBlackTheme {
+  composes: Footer;
+  background-color: #000;
+}
+
+.Phone {
+  color: #b9b8b8;
+  position: absolute;
+  left: 30px;
+  transition: 0.6s;
+}
+
+.Phone:hover {
+  text-decoration: none;
+  color: #999999;
+  transition: 0.6s;
+}
+
+.Links {
+  composes: FlexCenter from '../../App.module.css';
+  position: absolute;
+  right: 30px;
+}
+
+.Icon {
+  padding-right: 8px;
+}
+
+.Copy {
+  color: #b9b8b8;
+  margin: 0;
+  position: fixed;
+}
+
+.NotLogin {
+  composes: FlexCenter from '../../App.module.css';
+  flex-direction: column;
+}

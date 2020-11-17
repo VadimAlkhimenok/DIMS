@@ -1,0 +1,31 @@
+.Line {
+  composes: FlexCenter from '../../../App.module.css';
+  text-align: center;
+  height: 100%;
+  border-right: 1px solid #999;
+  word-wrap: break-word;
+  margin: 0;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+}
+
+.StateOfTask {
+  composes: Line;
+  height: 100%;
+  font-weight: bold;
+}
+
+.Active {
+  composes: StateOfTask;
+  color: dodgerblue;
+}
+
+.Success {
+  composes: StateOfTask;
+  color: green;
+}
+
+.Fail {
+  composes: StateOfTask;
+  color: tomato;
+}

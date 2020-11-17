@@ -1,0 +1,68 @@
+.About {
+    width: 1000px;
+}
+
+.Main {
+    width: 40rem;
+    height: 2rem;
+    border: 1px solid rgb(2, 64, 114);
+    text-align: center;
+    background: rgb(65, 135, 192);
+    color: #fff;
+}
+
+.MainBlack {
+    composes: Main;
+    background-color: #2F4F4F;
+    border: 1px solid #204c4c;
+}
+
+.SubBold {
+    width: 40rem;
+    height: 2rem;
+    border: 1px solid black;
+}
+
+.Title {
+    width: 40rem;
+    border-right: 1px solid rgb(2, 64, 114);
+}
+
+.TitleBlack {
+    composes: Title;
+    border: 1px solid #204c4c;
+}
+
+.Subtitle {
+    width: 10rem;
+    border-right: 1px solid rgb(2, 64, 114);
+}
+
+.SubtitleBlack {
+    composes: Subtitle;
+    border: 1px solid #204c4c;
+}
+
+.CellTitle {
+    padding-left: 1rem;
+    border: 1px solid #204c4c;
+}
+
+.CellTitleBlack {
+    composes: CellTitle;
+    color: #b1aeae;
+}
+
+.Allowed {
+    width: 10rem;
+    border: 1px solid #204c4c;
+    text-align: center;
+    color: green;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.NotAllowed {
+    composes: Allowed;
+    color: tomato;
+}

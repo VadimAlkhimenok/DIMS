@@ -1,0 +1,5 @@
+.ButtonsGroup {
+  composes: FlexCenter from '../../../App.module.css';
+  flex-wrap: wrap;
+  width: 25%;
+}

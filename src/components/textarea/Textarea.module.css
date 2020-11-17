@@ -1,0 +1,26 @@
+.Textarea {
+  padding: 1rem;
+  height: 10rem;
+  width: 95%;
+  border: 1px solid #000214;
+  border-radius: 1rem;
+  color: #4e4e4e;
+  font-size: 1rem;
+  margin-top: 1rem;
+  background-color: #e2e2e2;
+}
+
+.Textarea:focus {
+  border: 1px solid #000214;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.ErrorTextarea {
+  composes: Textarea;
+  border: 1px solid tomato;
+  color: rgb(248, 122, 99);
+}
+
+.ErrorMessage {
+  color: rgb(248, 122, 99);
+}

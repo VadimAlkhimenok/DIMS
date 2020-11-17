@@ -1,0 +1,6 @@
+.Routing {
+  composes: FlexCenter from '../../App.module.css';
+  flex: 1 1 auto;
+  align-items: center;
+  width: 80%;
+}

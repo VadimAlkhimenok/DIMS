@@ -1,0 +1,12 @@
+.Link {
+  margin-left: 1em;
+  margin-right: 1em;
+  color: #999;
+  transition: 0.5s;
+}
+
+.Link:hover {
+  text-decoration: none;
+  color: #495057;
+  transition: 0.5s;
+}

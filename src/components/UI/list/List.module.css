@@ -1,0 +1,10 @@
+.List {
+    color: #000214;
+    margin-left: 1.5rem;
+    transition: .6s;
+}
+
+.ListBlack {
+    composes: List;
+    color: #b1aeae;
+}

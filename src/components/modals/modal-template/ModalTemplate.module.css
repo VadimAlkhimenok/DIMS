@@ -1,0 +1,59 @@
+.Wrapper {
+  position: absolute;
+  background-color: rgb(201, 201, 201);
+  z-index: 10;
+  height: 100vh;
+  width: 100%;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.WrapperBlack {
+  composes: Wrapper;
+  background-color: rgb(177, 177, 177);
+}
+
+.ModalTemplate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #999;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 9999;
+  animation: ModalTemplate 1000ms ease-out forwards;
+  background-color: #fff;
+  width: 750px;
+}
+
+.ModalTemplateBlack {
+  composes: ModalTemplate;
+  background-color: rgb(83, 83, 83);
+}
+
+.Cross {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes ModalTemplate {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}

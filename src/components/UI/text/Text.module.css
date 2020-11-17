@@ -1,0 +1,10 @@
+.Text {
+    font-size: 1rem;
+    color: #000214;
+    margin-bottom: 1rem;
+}
+
+.TextBlack {
+    composes: Text;
+    color: #b1aeae;
+}

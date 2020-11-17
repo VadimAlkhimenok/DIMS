@@ -1,0 +1,61 @@
+.Theme {
+    width: 4rem;
+    left: 4rem;
+    position: relative;
+}
+
+input[type="checkbox"].Switch {
+    appearance: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    outline: 0;
+    z-index: 1;
+}
+
+input[type="checkbox"].Switch:checked + svg.Checkbox .IsChecked{
+    opacity: 1;
+    -webkit-transform: translateX(0) rotate(0deg);
+    transform: translateX(0) rotate(0deg);
+}
+
+input[type="checkbox"].Switch:checked + svg.Checkbox .IsUnchecked{
+    opacity: 0;
+    -webkit-transform: translateX(-200%) rotate(180deg);
+    transform: translateX(-200%) rotate(180deg);
+}
+
+svg.Checkbox .IsChecked{
+    opacity: 0;
+    fill: yellow;
+    transform-origin: 50% 50%;
+    transform: translateX(200%) rotate(45deg);
+    transition: all .35s;
+}
+
+svg.Checkbox .IsUnchecked{
+    opacity: 1;
+    fill: #fff;
+    transform-origin: 50% 50%;
+    transform: translateX(0) rotate(0deg);
+    transition: all .35s;
+}
+
+@-webkit-keyframes animateRing{
+    to{
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes animateRing{
+    to {stroke-dashoffset: 0}
+}
+
+@-webkit-keyframes resetRing{
+    to {stroke-dashoffset: 0}
+}
+
+@keyframes resetRing{
+    to {stroke-dashoffset: 0}
+}

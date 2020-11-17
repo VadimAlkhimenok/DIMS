@@ -1,0 +1,12 @@
+.Logo {
+    width: 20rem;
+    height: 23rem;
+    margin-top: 5rem;
+}
+
+.Home {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}

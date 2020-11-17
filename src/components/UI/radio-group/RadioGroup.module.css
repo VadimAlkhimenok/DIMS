@@ -1,0 +1,13 @@
+.RadioGroup {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    font-size: 15px;
+    margin: 1rem;
+    color: rgb(0, 0, 0);
+}
+
+.Title {
+    font-size: 13px;
+    color: #969696;
+}

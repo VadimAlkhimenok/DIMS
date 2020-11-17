@@ -1,0 +1,49 @@
+.Input {
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 15px;
+  border: 1px solid #000214;
+  color: #4e4e4e;
+  margin-bottom: 10px;
+  background-color: #e2e2e2;
+}
+
+.Input:focus {
+  border: 1px solid #000214;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.InputMain {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin: 1rem;
+  font-size: 15px;
+  color: #969696;
+}
+
+.Label {
+  font-size: 13px;
+}
+
+.ErrorInputMain {
+  composes: InputMain;
+  color: rgb(248, 122, 99);
+  font-weight: 200;
+}
+
+.ErrorInput {
+  composes: Input;
+  border: 1px solid tomato;
+  color: rgb(248, 122, 99);
+}
+
+.ErrorMessage {
+  color: rgb(248, 122, 99);
+}
+
+.Important {
+  color: red;
+  font-size: 15px;
+}

@@ -1,0 +1,10 @@
+.Radio {
+  display: flex;
+  align-items: center;
+}
+
+.Label {
+  margin-left: 0.5rem;
+  margin-bottom: 0;
+  color: #969696;
+}

@@ -1,0 +1,16 @@
+.MemberTasks {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Link {
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.Link:hover {
+  text-decoration: none;
+  color: #fff;
+  transition: 0.3s;
+}

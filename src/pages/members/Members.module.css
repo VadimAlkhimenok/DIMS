@@ -1,0 +1,18 @@
+.membersTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Link {
+  text-align: center;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.Link:hover {
+  text-decoration: none;
+  color: #ffffff;
+  transition: 0.3s;
+  opacity: 0.4;
+}

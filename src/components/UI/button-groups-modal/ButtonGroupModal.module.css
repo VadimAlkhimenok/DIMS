@@ -1,0 +1,5 @@
+.ButtonsGroupModal {
+  composes: FlexCenter from '../../../App.module.css';
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}

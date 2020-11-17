@@ -1,0 +1,9 @@
+.CrossIcon {
+  position: absolute;
+  top: -30px;
+  bottom: 0;
+  left: -60px;
+  right: 0;
+  margin-left: 14rem;
+  z-index: 99999;
+}
