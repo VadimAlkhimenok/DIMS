@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/DIMS/static/css/main.33044795.chunk.css",
+    "main.js": "/DIMS/static/js/main.3b99d0ad.chunk.js",
+    "main.js.map": "/DIMS/static/js/main.3b99d0ad.chunk.js.map",
+    "runtime-main.js": "/DIMS/static/js/runtime-main.7297d63d.js",
+    "runtime-main.js.map": "/DIMS/static/js/runtime-main.7297d63d.js.map",
+    "static/css/2.47f0c6be.chunk.css": "/DIMS/static/css/2.47f0c6be.chunk.css",
+    "static/js/2.a9315635.chunk.js": "/DIMS/static/js/2.a9315635.chunk.js",
+    "static/js/2.a9315635.chunk.js.map": "/DIMS/static/js/2.a9315635.chunk.js.map",
+    "index.html": "/DIMS/index.html",
+    "precache-manifest.897c37910b0fae812ab1641b3d343443.js": "/DIMS/precache-manifest.897c37910b0fae812ab1641b3d343443.js",
+    "service-worker.js": "/DIMS/service-worker.js",
+    "static/css/2.47f0c6be.chunk.css.map": "/DIMS/static/css/2.47f0c6be.chunk.css.map",
+    "static/css/main.33044795.chunk.css.map": "/DIMS/static/css/main.33044795.chunk.css.map",
+    "static/js/2.a9315635.chunk.js.LICENSE.txt": "/DIMS/static/js/2.a9315635.chunk.js.LICENSE.txt",
+    "static/media/font-awesome.min.css": "/DIMS/static/media/fontawesome-webfont.fee66e71.woff",
+    "static/media/human1.png": "/DIMS/static/media/human1.36496b94.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7297d63d.js",
+    "static/css/2.47f0c6be.chunk.css",
+    "static/js/2.a9315635.chunk.js",
+    "static/css/main.33044795.chunk.css",
+    "static/js/main.3b99d0ad.chunk.js"
+  ]
+}
