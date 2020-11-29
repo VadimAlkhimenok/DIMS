@@ -36,7 +36,7 @@ export default class App extends Component {
     };
 
     this.state = {
-      isAdmin: true,
+      isAdmin: false,
       isMentor: false,
       isUser: false,
       userId: null,
