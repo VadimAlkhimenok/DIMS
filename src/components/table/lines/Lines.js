@@ -1,19 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './Lines.module.css';
-import { ThemeContext } from '../../../context/Contexts';
 
-export const Lines = ({ children }) => {
-  return (
-    <ThemeContext.Consumer>
-      {isBlack => (
-        <div className={isBlack ? classes.LinesBlackTheme : classes.Lines}>
-          {children}
-        </div>
-      )}
-    </ThemeContext.Consumer>
-  );
-};
+export const Lines = ({ children }) => <div className={classes.Lines}>{children}</div>;
 
 Lines.propTypes = {
   children: PropTypes.node.isRequired,

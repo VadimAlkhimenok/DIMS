@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './Select.module.css';
 
-export const Select = ({ options, title, disabled, handleChange, value, important, errorMessage, error }) => (
+export const Select = ({ options, title, disabled, handleChange, value, important, error }) => (
   <div className={error && important ? classes.ErrorSelectMain : classes.SelectMain}>
     <label htmlFor={title} className={classes.Label}>
       {title}
@@ -10,14 +10,15 @@ export const Select = ({ options, title, disabled, handleChange, value, importan
     </label>
 
     <select className={classes.Select} disabled={disabled} onChange={handleChange} name={title} value={value}>
+      <option value='' disabled hidden>
+        Choose
+      </option>
       {options.map((option, index) => (
         <option key={`${option}${index}`} id={option.id}>
           {option.name}
         </option>
       ))}
     </select>
-
-    <small className={classes.ErrorMessage}>{error && important ? errorMessage : null}</small>
   </div>
 );
 
@@ -27,7 +28,6 @@ Select.defaultProps = {
   options: false,
   value: '',
   important: false,
-  errorMessage: '',
   error: false,
 };
 

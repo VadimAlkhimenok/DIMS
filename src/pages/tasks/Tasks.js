@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './Tasks.module.css';
 import { HeaderLine } from '../../components/table/header-line/HeaderLine';
 import { Button } from '../../components/UI/button/Button';
@@ -8,222 +8,141 @@ import { LineLink } from '../../components/table/line-link/LineLink';
 import { ButtonsGroup } from '../../components/UI/buttons-group/ButtonsGroup';
 import { ButtonMain } from '../../components/UI/button-main/ButtonMain';
 import { Spinner } from '../../components/UI/spinner/Spinner';
-import { deleteTask, getCollection, getUserOfData } from '../../components/firebase/firebaseAPI';
 import ModalCreate from '../../components/modals/modal-create/ModalCreate';
 import { headerLine } from './TasksData';
-import { color } from '../../components/UI/colors/colors';
-import { db } from '../../components/firebase/firebase';
-import { Status } from '../../components/UI/status/Status';
-import { ThemeContext } from '../../context/Contexts';
-import { collection } from '../../components/helpers/commonData/collections';
+import { RolesContext } from '../../context/Contexts';
+import { connect } from 'react-redux';
+import { handleClickClose, setEdit, setDetail } from '../../redux/actionsCreators/appCreators';
+import {
+  getTask,
+  getTasks,
+  getUpdatedTasks,
+  getUserNameAndId,
+  handleClickCreate,
+  delTask,
+} from '../../redux/actionsCreators/tasksCreators';
+import { successResponseData } from '../../components/helpers/commonData/successResponseData';
 
-export default class Tasks extends Component {
-  state = {
-    userNameAndId: [],
-    tasks: null,
-    task: null,
-    isLoading: false,
-    isShowModalCreate: false,
-    name: '',
-    title: '',
-    hidden: false,
-    disabled: false,
-    isRegister: false,
-    isStatus: false,
-    isShowStatus: false,
-    message: '',
-  };
-
+class Tasks extends PureComponent {
   async componentDidMount() {
-    await this.getUpdatedTasks();
-    await this.getUserNameAndId();
-    await this.getTasks();
+    const { getTasks, getUpdatedTasks, getUserNameAndId } = this.props;
+    await Promise.all([await getTasks(), await getUpdatedTasks(), await getUserNameAndId()]);
     document.title = 'Tasks';
   }
 
-  showError = message => {
-    this.setState({
-      isShowStatus: true,
-      message,
-    })
-  };
-
-  showSuccess = message => {
-    this.setState({
-      isShowStatus: true,
-      message,
-      isStatus: true,
-    })
-  };
-
-  resetStatus = () => {
-    this.setState({
-      isShowStatus: false,
-      message: ''
-    })
-  };
-
-  getUserNameAndId = async () => {
-    try {
-      let usersData = await getCollection('UserProfile');
-      const userNameAndId = usersData.map((user) => ({ name: user.name, id: user.userId }));
-      this.setState({ userNameAndId });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task of data!");
-    }
-  };
-
-  handleClickCreate = () => {
-    this.setState({
-      isShowModalCreate: true,
-      isLoading: !this.state.isLoading,
-      name: 'Create',
-      title: 'Create task',
-      hidden: false,
-      disabled: false,
-      task: null,
-      isRegister: true,
-    });
-  };
-
   handleClickEdit = (taskId) => async () => {
+    const { getTask, setEdit } = this.props;
+    const { showError } = this.context;
     try {
-      await this.getTask(taskId);
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task of data!");
+      await getTask(taskId).then(() => setEdit(taskId));
+    } catch ({ message }) {
+      showError(message);
     }
-
-    this.setState({
-      isShowModalCreate: false,
-      isLoading: !this.state.isLoading,
-      name: 'Save changes',
-      title: 'Edit',
-      hidden: false,
-      disabled: false,
-      isRegister: false,
-    });
   };
 
-  handleClickDetail = taskId => async () => {
+  handleClickDetail = (taskId) => async () => {
+    const { setDetail, getTask } = this.props;
+    const { showError } = this.context;
     try {
-      await this.getTask(taskId);
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task of data!");
+      await getTask(taskId).then(() => setDetail(taskId));
+    } catch ({ message }) {
+      showError(message);
     }
-
-    this.setState({
-      isShowModalCreate: false,
-      isLoading: !this.state.isLoading,
-      hidden: true,
-      disabled: true,
-      title: 'Details',
-    });
   };
 
   handleClickDelete = (taskId) => async () => {
+    const { delTask } = this.props;
+    const { showError, showSuccess } = this.context;
+    const { deleTask } = successResponseData;
     try {
-      await deleteTask(taskId);
-      this.showSuccess('Success! Task was deleted!');
-      this.resetStatus();
-    } catch (e) {
-      this.showError("Error! Task wasn't deleted");
+      await delTask(taskId);
+      showSuccess(deleTask);
+    } catch ({ message }) {
+      showError(message);
     }
   };
 
-  getTasks = async () => {
-    try {
-      const tasks = await getCollection(collection.task);
-      this.setState({
-        tasks,
-        isLoading: !this.state.isLoading,
-      });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get tasks!");
-    }
+  tasksTable = () => {
+    const { tasks } = this.props.tasks;
+    const { handleClickCreate } = this.props;
+
+    return (
+      <div className={classes.TasksTable}>
+        <ButtonMain>
+          <Button name='Create' handleClick={handleClickCreate} />
+        </ButtonMain>
+
+        <HeaderLine>
+          {headerLine.map((line, idx) => (
+            <Line key={idx} width={line.width} text={line.text} />
+          ))}
+        </HeaderLine>
+
+        {tasks.map((task, index) => {
+          return (
+            <Lines key={`${task.taskId}task`}>
+              <Line width={5} text={index + 1} />
+              <LineLink width={20} text={task.userName} handleClick={this.handleClickDetail(task.taskId)} />
+              <Line width={25} text={task.start} />
+              <Line width={25} text={task.deadline} />
+
+              <ButtonsGroup>
+                <Button name='Edit' color={'var(--background-table)'} handleClick={this.handleClickEdit(task.taskId)} />
+                <Button
+                  name='Delete'
+                  color={'var(--color-button-delete)'}
+                  handleClick={this.handleClickDelete(task.taskId)}
+                />
+              </ButtonsGroup>
+            </Lines>
+          );
+        })}
+      </div>
+    );
   };
-
-  getTask = async (taskId) => {
-    try {
-      let [task] = await getUserOfData(collection.task, taskId, 'taskId');
-      this.setState({ task });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task!");
-    }
-  };
-
-  getUpdatedTasks = async () => {
-    try {
-      db.collection('Task').onSnapshot((snapshot) => {
-        let tasks = snapshot.docs.map((data) => ({ ...data.data() }));
-        this.setState({ tasks });
-      });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get updated task of data!");
-    }
-  };
-
-  tasksTable = () => (
-    <div className={classes.TasksTable}>
-      <ButtonMain>
-        <Button name='Create' handleClick={this.handleClickCreate} />
-      </ButtonMain>
-
-      <HeaderLine>
-        {headerLine.map((line, idx) => (
-          <Line key={idx} width={line.width} text={line.text} />
-        ))}
-      </HeaderLine>
-
-      {this.state.tasks.map((task, index) => {
-        return (
-          <Lines key={`${task.taskId}task`}>
-            <Line width={5} text={index + 1} />
-            <LineLink
-              width={20}
-              text={task.userName}
-              handleClick={this.handleClickDetail(task.taskId)}
-            />
-            <Line width={25} text={task.start} />
-            <Line width={25} text={task.deadline} />
-
-            <ThemeContext.Consumer>
-              {isBlack => (
-                <ButtonsGroup>
-                  <Button name='Edit' color={isBlack ? color.black : color.lightBlue} handleClick={this.handleClickEdit(task.taskId)} />
-                  <Button name='Delete' color={isBlack ? color.darkRed : color.red} handleClick={this.handleClickDelete(task.taskId)} />
-                </ButtonsGroup>
-              )}
-            </ThemeContext.Consumer>
-          </Lines>
-        );
-      })}
-    </div>
-  );
 
   render() {
-    const { isLoading, isShowModalCreate, name, title, hidden, disabled,
-      userNameAndId, task, isShowStatus, message, isStatus
-    } = this.state;
+    const { isLoading, userNameAndId, task, isModal, name, title, isHidden, isDisabled } = this.props.tasks;
+    const { handleClickClose } = this.props;
 
     return (
       <>
         {isLoading ? (
           this.tasksTable()
-        ) : isShowModalCreate || task ? (
+        ) : isModal || task ? (
           <ModalCreate
             name={name}
             title={title}
-            handleClickCreate={this.handleClickCreate}
-            hidden={hidden}
-            disabled={disabled}
+            handleClickClose={handleClickClose}
+            hidden={isHidden}
+            disabled={isDisabled}
             userName={userNameAndId}
             task={task}
           />
         ) : (
           <Spinner />
         )}
-        { isShowStatus ? <Status message={message} isStatus={isStatus} /> : null }
       </>
     );
   }
 }
+
+Tasks.contextType = RolesContext;
+
+const mapStateToProps = (state) => {
+  const { isLoading, userNameAndId, tasks, task, isModal, name, title, isHidden, isDisabled } = state;
+
+  return { isLoading, userNameAndId, tasks, task, isModal, name, title, isHidden, isDisabled };
+};
+
+export default connect(mapStateToProps, {
+  getTask,
+  getTasks,
+  getUpdatedTasks,
+  getUserNameAndId,
+  handleClickClose,
+  handleClickCreate,
+  setEdit,
+  setDetail,
+  delTask,
+})(Tasks);

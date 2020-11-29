@@ -2,15 +2,10 @@
   position: absolute;
   background-color: rgb(201, 201, 201);
   z-index: 10;
-  height: 100vh;
-  width: 100%;
+  height: 109.9vh;
+  width: 100vw;
   opacity: 0.9;
   cursor: pointer;
-}
-
-.WrapperBlack {
-  composes: Wrapper;
-  background-color: rgb(177, 177, 177);
 }
 
 .ModalTemplate {
@@ -25,22 +20,19 @@
   position: relative;
   z-index: 9999;
   animation: ModalTemplate 1000ms ease-out forwards;
-  background-color: #fff;
+  background-color: var(--background-modal);
   width: 750px;
-}
-
-.ModalTemplateBlack {
-  composes: ModalTemplate;
-  background-color: rgb(83, 83, 83);
+  margin-top: 80px;
 }
 
 .Cross {
   position: absolute;
   right: 20px;
-  top: 0px;
+  top: 0;
   font-size: 40px;
   font-weight: bold;
   cursor: pointer;
+  color: var(--color-title);
 }
 
 @keyframes ModalTemplate {
@@ -55,5 +47,18 @@
 
   100% {
     transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .ModalTemplate {
+    margin-top: 80px;
+    width: 100%;
+    height: 75%;
+  }
+  .Cross {
+    right: 15px;
+    top: -5px;
+    font-size: 40px;
   }
 }

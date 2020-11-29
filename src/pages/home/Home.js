@@ -7,7 +7,7 @@ export const Home = () => {
   return (
     <div className={classes.Home}>
       <Title text='Dev Incubator Management System' />
-      <img src={logo} alt="Dev Incubator" className={classes.Logo} />
+      <img src={logo} alt='Dev Incubator' className={classes.Logo} />
     </div>
   );
 };

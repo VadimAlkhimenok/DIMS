@@ -11,11 +11,6 @@ export const inputsModalData = [
   { name: 'Math score', type: 'number', id: 'mathScore' },
 ];
 
-export const options = [
-  { name: 'Frontend' },
-  { name: 'Backend' },
-  { name: 'Java' },
-  { name: '.Net' }
-];
+export const options = [{ name: 'Frontend' }, { name: 'Backend' }, { name: 'Java' }, { name: '.Net' }];
 
 export const radioData = ['Male', 'Female'];

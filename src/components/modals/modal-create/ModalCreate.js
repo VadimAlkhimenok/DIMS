@@ -12,10 +12,10 @@ import { Textarea } from '../../textarea/Textarea';
 import { ButtonsGroupModal } from '../../UI/button-groups-modal/ButtonGroupModal';
 import { addData, updateData } from '../../firebase/firebaseAPI';
 import { Select } from '../../select/Select';
-import { Status } from '../../UI/status/Status';
 import { isEmptyInputModal } from '../../helpers/validations/emptyInputModal';
-import { ThemeContext } from '../../../context/Contexts';
+import { RolesContext } from '../../../context/Contexts';
 import { collection } from '../../helpers/commonData/collections';
+import { successResponseData } from '../../helpers/commonData/successResponseData';
 
 export default class ModalCreate extends Component {
   state = {
@@ -27,9 +27,6 @@ export default class ModalCreate extends Component {
       userId: null,
       state: 'Active',
     },
-    isStatus: false,
-    isShowStatus: false,
-    message: '',
     isErrorInput: false,
     errorMessageInput: '',
   };
@@ -40,65 +37,40 @@ export default class ModalCreate extends Component {
 
     const tempTaskData = Object.assign(taskData, task);
     this.setState({ taskData: tempTaskData });
-  };
-
-  showError = message => {
-    this.setState({
-      isShowStatus: true,
-      message
-    })
-  };
-
-  showSuccess = message => {
-    this.setState({
-      isShowStatus: true,
-      message,
-      isStatus: true,
-    })
-  };
-
-  resetStatus = () => {
-    this.setState({
-      isShowStatus: false,
-      message: '',
-      isErrorInput: false,
-    })
-  };
+  }
 
   handleClickSubmit = async (event) => {
     event.preventDefault();
 
+    const { updateTask, addTask } = successResponseData;
+    const { showSuccess } = this.context;
+
     try {
       const { taskId, state, ...task } = this.state.taskData;
       const { taskData } = this.state;
-      const { handleClickCreate } = this.props;
+      const { handleClickClose } = this.props;
+      const { showError } = this.context;
 
       if (isEmptyInputModal(task)) {
         this.setState({
           isErrorInput: true,
-          errorMessageInput: 'Fill important field',
         });
+        showError('Fill important field');
         return;
       }
 
       if (taskId) {
-        try {
-          await updateData(taskId, collection.task, taskData);
-          this.showSuccess(`Success! Data of task was updated!`);
-        } catch (e) {
-          this.showError('Something wrong! Data of task wasnt updated!');
-        }
+        await updateData(taskId, collection.task, taskData);
+        showSuccess(updateTask);
       } else {
-        try {
-          await addData(collection.task, taskData, 'taskId');
-          this.showSuccess(`Success! The task was added!`);
-        } catch (e) {
-          this.showError('Something wrong! The task wasnt added!');
-        }
+        await addData(collection.task, taskData, 'taskId');
+        showSuccess(addTask);
       }
-      handleClickCreate();
-    } catch (e) {
-      this.showError('Something wrong! Check input data!');
+
+      handleClickClose();
+    } catch ({ message }) {
+      const { showError } = this.context;
+      showError(message);
     }
   };
 
@@ -107,9 +79,8 @@ export default class ModalCreate extends Component {
       taskData: {
         ...prevState.taskData,
         [id]: value,
-      }
+      },
     }));
-    this.resetStatus();
   };
 
   handleChangeSelect = ({ target: { value, selectedIndex, childNodes } }) => {
@@ -121,11 +92,9 @@ export default class ModalCreate extends Component {
           ...prevState.taskData,
           userName: value,
           userId: id,
-        }
+        },
       };
     });
-
-    this.resetStatus();
   };
 
   handleChangeTextarea = ({ target: { value } }) => {
@@ -133,81 +102,65 @@ export default class ModalCreate extends Component {
       taskData: {
         ...prevState.taskData,
         description: value,
-      }
+      },
     }));
-
-    this.resetStatus();
   };
 
   render() {
-    const { name, title, handleClickCreate, hidden, disabled, userName } = this.props;
-    const { taskData, isErrorInput, errorMessageInput, isShowStatus, message, isStatus } = this.state;
+    const { name, title, handleClickClose, hidden, disabled, userName } = this.props;
+    const { taskData, isErrorInput, errorMessageInput } = this.state;
 
     return (
       <>
-        <ThemeContext.Consumer>
-          {isBlack => (
-            <ModalTemplate handleOpenCloseModal={handleClickCreate}>
-              <div className={classes.ModalCreate}>
-                <Title text={title} />
+        <ModalTemplate handleOpenCloseModal={handleClickClose}>
+          <div className={classes.ModalCreate}>
+            <Title text={title} />
 
-                <Textarea
-                  name='Description'
+            <Textarea
+              name='Description'
+              disabled={disabled}
+              handleChange={this.handleChangeTextarea}
+              errorMessage={errorMessageInput}
+              error={isErrorInput}
+              value={taskData.description}
+              important={true}
+            />
+
+            <InputsGroup>
+              {inputsModalData.map((input, idx) => (
+                <Input
+                  key={idx}
+                  id={input.id}
+                  name={input.name}
+                  type={input.type}
                   disabled={disabled}
-                  handleChange={this.handleChangeTextarea}
+                  handleChange={this.handleChangeModal}
                   errorMessage={errorMessageInput}
                   error={isErrorInput}
-                  value={taskData.description}
-                  important={true}
+                  important={input.important}
+                  value={taskData[input.id]}
                 />
+              ))}
+              {
+                <Select
+                  options={userName}
+                  title='Members'
+                  disabled={disabled}
+                  handleChange={this.handleChangeSelect}
+                  value={taskData.userName}
+                  important={true}
+                  error={isErrorInput}
+                  errorMessage={errorMessageInput}
+                />
+              }
+            </InputsGroup>
 
-                <InputsGroup>
-                  {inputsModalData.map((input, idx) => (
-                    <Input
-                      key={idx}
-                      id={input.id}
-                      name={input.name}
-                      type={input.type}
-                      disabled={disabled}
-                      handleChange={this.handleChangeModal}
-                      errorMessage={errorMessageInput}
-                      error={isErrorInput}
-                      important={input.important}
-                      value={taskData[input.id]}
-                    />
-                  ))}
-                  {
-                    <Select
-                      options={userName}
-                      title='Members'
-                      disabled={disabled}
-                      handleChange={this.handleChangeSelect}
-                      value={taskData.userName}
-                      important={true}
-                      error={isErrorInput}
-                      errorMessage={errorMessageInput}
-                    />
-                  }
-                </InputsGroup>
-
-                <ButtonsGroupModal>
-                  <Button
-                    name={name}
-                    color={isBlack ? color.black : color.green}
-                    hidden={hidden}
-                    handleClick={this.handleClickSubmit}
-                  />
-                  <Button
-                    name='Back to grid'
-                    color={isBlack ? color.darkRed : color.red}
-                    handleClick={handleClickCreate}
-                  />
-                </ButtonsGroupModal>
-              </div>
-            </ModalTemplate>
-          )}
-        </ThemeContext.Consumer>
-        {isShowStatus ? <Status message={message} isStatus={isStatus} /> : null}
+            <ButtonsGroupModal>
+              <Button name={name} color={color.green} hidden={hidden} handleClick={this.handleClickSubmit} />
+              <Button name='Back' color={'var(--color-button-delete)'} handleClick={handleClickClose} />
+            </ButtonsGroupModal>
+          </div>
+        </ModalTemplate>
       </>
     );
   }
@@ -222,6 +175,8 @@ ModalCreate.defaultProps = {
 };
 
 ModalCreate.propTypes = {
-  handleClickCreate: PropTypes.func.isRequired,
+  handleClickClose: PropTypes.func.isRequired,
   userNameAndId: PropTypes.array,
 };
+
+ModalCreate.contextType = RolesContext;

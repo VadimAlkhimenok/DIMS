@@ -5,9 +5,9 @@
   min-width: 15rem;
   min-height: 2rem;
   border-radius: 5px;
-  background-color: #000214;
+  background-color: var(--color-status);
   color: #fff;
-  border: 1px solid #0320ef;
+  border: 1px solid #000214;
   transition: 1s;
   opacity: 0;
   animation: show 4ms 1;
@@ -32,5 +32,18 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .Wrapper {
+    top: 5.6rem;
+    right: 0.4rem;
+    min-width: 11rem;
+    min-height: 2rem;
+  }
+  .Status {
+    padding: 5px;
+    font-size: 0.7rem;
   }
 }

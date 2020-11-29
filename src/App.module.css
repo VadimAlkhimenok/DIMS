@@ -8,12 +8,5 @@
   composes: FlexCenter;
   flex-direction: column;
   height: 100vh;
-  background-color: rgb(226, 240, 255);
   transition: 0.6s;
-}
-
-.AppBlackTheme {
-  composes: FlexCenter;
-  composes: App;
-  background-color: rgb(31, 31, 31);
 }

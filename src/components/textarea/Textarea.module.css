@@ -24,3 +24,15 @@
 .ErrorMessage {
   color: rgb(248, 122, 99);
 }
+
+@media screen and (max-width: 500px) {
+  .Textarea {
+    height: 14rem;
+    width: 98%;
+    margin-top: 1.5rem;
+  }
+  .ErrorMessage {
+    font-size: 13px;
+    margin-bottom: 2rem;
+  }
+}

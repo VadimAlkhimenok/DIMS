@@ -30,11 +30,31 @@
   font-weight: 200;
 }
 
-.ErrorMessage {
-  color: rgb(248, 122, 99);
+.Error {
+  border: 1px solid rgb(248, 122, 99);
 }
 
 .Important {
   color: red;
   font-size: 1.3rem;
+}
+
+@media screen and (max-width: 500px) {
+  .SelectMain {
+    width: 40%;
+    margin: 5px;
+  }
+  .Select {
+    padding: 8px;
+    width: 100%;
+    font-size: 12px;
+    margin-bottom: 3px;
+    height: 2.2rem;
+  }
+  .Label {
+    font-size: 12px;
+  }
+  .Important {
+    font-size: 10px;
+  }
 }

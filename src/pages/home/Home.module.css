@@ -1,12 +1,12 @@
 .Logo {
-    width: 20rem;
-    height: 23rem;
-    margin-top: 5rem;
+  width: 20rem;
+  height: 23rem;
+  margin-top: 3rem;
 }
 
 .Home {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }

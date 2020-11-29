@@ -1,0 +1,53 @@
+:root {
+  --color-title-light: #000214;
+  --color-title-dark: #b1aeae;
+  --color-button-dark: #a52a2a;
+  --color-button-light: #0a8b2b;
+  --color-button-tomato: 'tomato';
+
+  --color-button-delete-dark: #a52a2a;
+  --color-button-delete-light: #e26a6a;
+
+  --background-app-dark: #1f1f1f;
+  --background-app-light: #d6e9ff;
+
+  --background-header-footer-light: #000214;
+  --background-header-footer-dark: #000000;
+
+  --background-sidebar-dark: #3b3b3b;
+  --background-sidebar-light: #21232d;
+
+  --background-modal-dark: #474747;
+  --background-modal-light: #f5f7ff;
+
+  --background-table-dark: #2f4f4f;
+  --background-table-light: #4187c0;
+
+  --background-auth-dark: #c5c6ca;
+  --background-auth-light: #fff;
+}
+
+body[data-theme='dark'] {
+  --color-background: var(--background-app-dark);
+  --color-background-header-footer: var(--background-header-footer-dark);
+  --color-background-sidebar: var(--background-sidebar-dark);
+  --background-modal: var(--background-modal-dark);
+  --color-title: var(--color-title-dark);
+  --background-table: var(--background-table-dark);
+  --color-button-delete: var(--color-button-delete-dark);
+  --color-status: var(--background-modal-dark);
+  --color-auth: var(--background-auth-dark);
+}
+
+body[data-theme='light'] {
+  --color-background: var(--background-app-light);
+  --color-background-header-footer: var(--background-header-footer-light);
+  --color-background-sidebar: var(--background-sidebar-light);
+  --background-modal: var(--background-modal-light);
+  --color-title: var(--color-title-light);
+  --color-button: var(--color-button-dark);
+  --background-table: var(--background-table-light);
+  --color-button-delete: var(--color-button-delete-light);
+  --color-status: var(--background-header-footer-light);
+  --color-auth: var(--background-auth-light);
+}

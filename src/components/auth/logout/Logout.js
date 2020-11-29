@@ -4,21 +4,18 @@ import { Link } from 'react-router-dom';
 import { LoginContext } from '../../../context/Contexts';
 import LogoutIcon from '../../UI/icons/LogoutIcon';
 
-export const Logout = ({setLogout}) => {
-
+export const Logout = ({ setLogout }) => {
   return (
     <LoginContext.Consumer>
-      {login =>
-        login
-          ? <>
-              <Link to='/login' className={classes.Logout} onClick={setLogout}>
-                Logout
-                <LogoutIcon />
-              </Link>
-            </>
-          : null
+      {(login) =>
+        login ? (
+          <>
+            <Link to='/login' className={classes.Logout} onClick={setLogout}>
+              <LogoutIcon />
+            </Link>
+          </>
+        ) : null
       }
     </LoginContext.Consumer>
-  )
+  );
 };
-

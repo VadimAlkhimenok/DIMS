@@ -3,17 +3,16 @@ import classes from './Auth.module.css';
 import firebase from 'firebase';
 import axios from 'axios';
 import { Title } from '../title/Title';
-import { LinkTemplate } from '../link/LinkTemplate';
-import GoogleIcon from '../UI/icons/GoogleIcon';
-import FacebookIcon from '../UI/icons/FacebookIcon';
-import { Status } from '../UI/status/Status';
 import { RolesContext } from '../../context/Contexts';
 import { getCollection } from '../firebase/firebaseAPI';
 import { linkForAuth } from '../helpers/commonData/config';
 import { collection } from '../helpers/commonData/collections';
-import GithubIcon from '../UI/icons/GithubIcon';
 import { validationAuthForm } from '../helpers/validationAuthForm/validationAuthForm';
 import { getWhoLoginSystem } from '../helpers/isLogInSystem/isLoginSystem';
+import { Icon } from '../UI/icon/Icon';
+import { successResponseData } from '../helpers/commonData/successResponseData';
+import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { LinkTemplate } from '../link/LinkTemplate';
 
 export default class Auth extends PureComponent {
   state = {
@@ -23,27 +22,9 @@ export default class Auth extends PureComponent {
     errorPassword: '',
     isErrorEmail: false,
     isErrorPassword: false,
-    isShowStatus: false,
-    message: '',
-    isStatus: false,
+    hasError: false,
     disabled: false,
-    isValid: false
-  };
-
-  showError = message => {
-    this.setState({
-      isShowStatus: true,
-      message,
-    })
-  };
-
-  showSuccess = message => {
-    this.setState({
-      isShowStatus: true,
-      message,
-      isStatus: true,
-      disabled: true,
-    })
+    isValid: false,
   };
 
   handleChangeEmail = ({ target: { value } }) => {
@@ -67,17 +48,20 @@ export default class Auth extends PureComponent {
   handleClickAuth = async () => {
     const { setLogin, getLoginRole } = this.props;
     const { email, password } = this.state;
-    const [ admin, mentor, user ] = Object.keys(this.context);
+    const [admin, mentor, user] = Object.keys(this.context);
     const [{ adminEmail, mentorEmail }] = await getCollection(collection.roles);
+    const { showError, showSuccess } = this.context;
+    const { login } = successResponseData;
 
     let { errorEmail, errorPassword, isErrorEmail, isErrorPassword, isValid } = validationAuthForm(email, password);
+
     if (isValid) {
       this.setState({
         errorEmail,
         errorPassword,
         isErrorEmail,
-        isErrorPassword
-      })
+        isErrorPassword,
+      });
     } else {
       const authData = {
         email,
@@ -89,54 +73,76 @@ export default class Auth extends PureComponent {
         const currentUser = await getWhoLoginSystem(email, adminEmail, mentorEmail, admin, mentor, user);
         getLoginRole(currentUser);
         setLogin();
-      } catch (e) {
-        console.log(e);
+        showSuccess(login);
+      } catch ({
+        response: {
+          data: {
+            error: { message },
+          },
+        },
+      }) {
+        showError(message);
       }
     }
   };
 
-  loginWithGoogle = async () => {
+  loginWithGoogle = async (event) => {
     try {
+      event.preventDefault();
       const googleProvider = new firebase.auth.GoogleAuthProvider();
       await firebase.auth().signInWithPopup(googleProvider);
-    } catch (e) {
-      this.showError('Something wrong! Cannot log in DIMS!')
+    } catch ({
+      response: {
+        data: {
+          error: { message },
+        },
+      },
+    }) {
+      const { showError } = this.context;
+      showError(message);
     }
-  }
+  };
 
-  loginWithFacebook = async () => {
+  loginWithFacebook = async (event) => {
     try {
+      event.preventDefault();
       const facebookProvider = new firebase.auth.FacebookAuthProvider();
       await firebase.auth().signInWithPopup(facebookProvider);
-    } catch (e) {
-      this.showError('Something wrong! Cannot log in DIMS!')
+    } catch ({
+      response: {
+        data: {
+          error: { message },
+        },
+      },
+    }) {
+      const { showError } = this.context;
+      showError(message);
     }
-  }
+  };
 
-  loginWithGitHub = async () => {
+  loginWithGitHub = async (event) => {
     try {
+      event.preventDefault();
       const githubProvider = new firebase.auth.GithubAuthProvider();
       await firebase.auth().signInWithPopup(githubProvider);
-    } catch (e) {
-      this.showError('Something wrong! Cannot log in DIMS!')
+    } catch ({
+      response: {
+        data: {
+          error: { message },
+        },
+      },
+    }) {
+      const { showError } = this.context;
+      showError(message);
     }
-  }
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
   };
 
   authTable = () => {
-    const {
-      errorEmail,
-      isErrorEmail,
-      errorPassword,
-      isErrorPassword,
-      disabled,
-      isShowStatus,
-      message,
-      isStatus,
-    } = this.state;
+    const { errorEmail, isErrorEmail, errorPassword, isErrorPassword, disabled } = this.state;
 
     return (
       <>
@@ -172,22 +178,22 @@ export default class Auth extends PureComponent {
                 </div>
               </div>
 
-              <div className='d-flex flex-row'>
+              <div className='d-flex flex-row justify-content-between'>
                 <button type='submit' className='btn btn-success' onClick={this.handleClickAuth} disabled={disabled}>
                   Confirm
                 </button>
 
+                <LinkTemplate text='Forgot password?' />
+
                 <div className='d-flex justify-content-space-around align-items-center'>
-                  <LinkTemplate text='Forgot password?' />
-                  <GoogleIcon loginWithGoogle={this.loginWithGoogle}/>
-                  <FacebookIcon loginWithFacebook={this.loginWithFacebook} />
-                  <GithubIcon loginWithGithub={this.loginWithGitHub} />
+                  <Icon handleClick={this.loginWithGoogle} icon={faGoogle} />
+                  <Icon handleClick={this.loginWithFacebook} icon={faFacebook} />
+                  <Icon handleClick={this.loginWithGitHub} icon={faGithub} />
                 </div>
               </div>
             </form>
           </div>
         </div>
-        {isShowStatus ? <Status message={message} isStatus={isStatus} /> : null}
       </>
     );
   };

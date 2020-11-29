@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classes from './Textarea.module.css';
 
-export const Textarea = ({ name, handleChange, disabled, errorMessage, error, value, id }) => {
+export const Textarea = ({ name, handleChange, disabled, error, value, id }) => {
   return (
     <>
       <textarea
@@ -14,7 +14,6 @@ export const Textarea = ({ name, handleChange, disabled, errorMessage, error, va
         value={value}
         id={id}
       />
-      <small className={classes.ErrorMessage}>{error ? errorMessage : null}</small>
     </>
   );
 };
@@ -22,7 +21,6 @@ export const Textarea = ({ name, handleChange, disabled, errorMessage, error, va
 Textarea.defaultProps = {
   name: 'Description',
   disabled: false,
-  errorMessage: '',
   error: false,
   value: '',
 };

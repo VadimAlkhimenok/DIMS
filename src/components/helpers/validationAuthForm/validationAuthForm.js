@@ -10,29 +10,29 @@ export const validationAuthForm = (email, password) => {
       errorPassword: "Input can't be empty",
       isErrorEmail: true,
       isErrorPassword: true,
-      isValid: true
-    }
+      isValid: true,
+    };
   } else if (isCorrectEmail(email)) {
     return {
-      errorEmail: "Invalid email",
+      errorEmail: 'Invalid email',
       isErrorEmail: true,
-      isValid: true
-    }
+      isValid: true,
+    };
   } else if (isLengthPassword(password)) {
     return {
-      errorPassword: "Password must be more than 6",
+      errorPassword: 'Password must be more than 6',
       isErrorPassword: true,
-      isValid: true
-    }
+      isValid: true,
+    };
   } else if (isPasswordIncludeUpper(password)) {
     return {
-      errorPassword: "Password must have one upper letter",
+      errorPassword: 'Password must have one upper letter',
       isErrorPassword: true,
-      isValid: true
-    }
+      isValid: true,
+    };
   } else {
     return {
-      isValid: false
-    }
+      isValid: false,
+    };
   }
-}
+};

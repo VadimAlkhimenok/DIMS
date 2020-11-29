@@ -1,68 +1,58 @@
 .About {
-    width: 1000px;
+  margin-top: 3rem;
+  width: 1000px;
 }
 
 .Main {
-    width: 40rem;
-    height: 2rem;
-    border: 1px solid rgb(2, 64, 114);
-    text-align: center;
-    background: rgb(65, 135, 192);
-    color: #fff;
-}
-
-.MainBlack {
-    composes: Main;
-    background-color: #2F4F4F;
-    border: 1px solid #204c4c;
+  width: 40rem;
+  height: 2rem;
+  border: 1px solid var(--background-table);
+  text-align: center;
+  background: var(--background-table);
+  color: #b1aeae;
 }
 
 .SubBold {
-    width: 40rem;
-    height: 2rem;
-    border: 1px solid black;
+  width: 40rem;
+  height: 2rem;
+  border: var(--background-table);
 }
 
 .Title {
-    width: 40rem;
-    border-right: 1px solid rgb(2, 64, 114);
-}
-
-.TitleBlack {
-    composes: Title;
-    border: 1px solid #204c4c;
+  width: 40rem;
+  border-right: 1px solid var(--background-table);
 }
 
 .Subtitle {
-    width: 10rem;
-    border-right: 1px solid rgb(2, 64, 114);
-}
-
-.SubtitleBlack {
-    composes: Subtitle;
-    border: 1px solid #204c4c;
+  width: 10rem;
+  border-right: 1px solid var(--background-table);
 }
 
 .CellTitle {
-    padding-left: 1rem;
-    border: 1px solid #204c4c;
-}
-
-.CellTitleBlack {
-    composes: CellTitle;
-    color: #b1aeae;
+  padding-left: 1rem;
+  border: 1px solid #204c4c;
+  color: var(--color-title);
 }
 
 .Allowed {
-    width: 10rem;
-    border: 1px solid #204c4c;
-    text-align: center;
-    color: green;
-    font-weight: bold;
-    font-size: 1.5rem;
+  width: 10rem;
+  border: 1px solid #204c4c;
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .NotAllowed {
-    composes: Allowed;
-    color: tomato;
+  composes: Allowed;
+  color: tomato;
+}
+
+@media screen and (max-width: 500px) {
+  .SubBold {
+    height: 1rem;
+  }
+  .CellTitle {
+    font-size: 0.7rem;
+  }
 }

@@ -14,9 +14,9 @@ const app = (
       <React.StrictMode>
         <App />
       </React.StrictMode>
-    </BrowserRouter>,
+    </BrowserRouter>
   </Provider>
-)
+);
 
 ReactDOM.render(app, document.getElementById('root'));
 

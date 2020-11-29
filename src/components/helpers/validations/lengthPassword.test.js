@@ -12,4 +12,4 @@ describe('Length of password function', () => {
     const expected = isLengthPassword(input);
     expect(expected).toBeTruthy();
   });
-})
+});

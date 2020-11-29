@@ -1,8 +1,12 @@
 .Link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-left: 1em;
   margin-right: 1em;
   color: #999;
   transition: 0.5s;
+  text-align: center;
 }
 
 .Link:hover {

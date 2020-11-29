@@ -11,54 +11,55 @@ import { Spinner } from '../../components/UI/spinner/Spinner';
 import ModalRegister from '../../components/modals/modal-register/ModalRegister';
 import { Link } from 'react-router-dom';
 import { headerLine } from './MembersData';
-import { color } from '../../components/UI/colors/colors';
-import { Status } from '../../components/UI/status/Status';
-import { RolesContext, ThemeContext } from '../../context/Contexts';
+import { RolesContext } from '../../context/Contexts';
 import { connect } from 'react-redux';
 import {
   getListMembers,
   getMember,
-  setLoading,
-  setModal,
-  setName,
-  setTitle,
-  setHidden,
-  setDisabled,
-  setRegister,
-  setStatus,
-  setShowStatus,
-  setStatusMessage,
   getUpdatedMembers,
-  deleteMember, handleClickClose, handleClickRegister, editMember, detailMember
-} from '../../redux/actionsCreators/actionsCreators';
+  deleteMember,
+  handleClickRegister,
+} from '../../redux/actionsCreators/membersCreators';
+import { handleClickClose, setEdit, setDetail } from '../../redux/actionsCreators/appCreators';
+import { successResponseData } from '../../components/helpers/commonData/successResponseData';
 
 class Members extends PureComponent {
-
   async componentDidMount() {
-    const {getListMembers, getUpdatedMembers} = this.props;
-    getListMembers();
-    getUpdatedMembers();
+    const { getListMembers, getUpdatedMembers } = this.props;
+    await Promise.all([await getListMembers(), await getUpdatedMembers()]);
     document.title = 'Members';
+  }
+
+  handleClickEdit = (userId) => async () => {
+    const { getMember, setEdit } = this.props;
+    const { showError } = this.context;
+    try {
+      await getMember(userId).then(() => setEdit(userId));
+    } catch ({ message }) {
+      showError(message);
+    }
   };
 
-  componentWillUnmount() {
-    const {getUpdatedMembers} = this.props;
-    getUpdatedMembers();
-  };
-
-  handleClickEdit = userId => async () => {
-    const {editMember} = this.props;
-    editMember(userId);
-  };
-
-  handleClickDetail = userId => async () => {
-    const {detailMember} = this.props;
-    detailMember(userId);
+  handleClickDetail = (userId) => async () => {
+    const { getMember, setDetail } = this.props;
+    const { showError } = this.context;
+    try {
+      await getMember(userId).then(() => setDetail(userId));
+    } catch ({ message }) {
+      showError(message);
+    }
   };
 
   handleClickDelete = (userId) => async () => {
-    const {deleteMember} = this.props;
-    deleteMember(userId);
+    const { deleteMember } = this.props;
+    const { showError, showSuccess } = this.context;
+    const { deleteUser } = successResponseData;
+    try {
+      await deleteMember(userId);
+      showSuccess(deleteUser);
+    } catch ({ message }) {
+      showError(message);
+    }
   };
 
   membersTable = () => {
@@ -68,13 +69,13 @@ class Members extends PureComponent {
     return (
       <div className={classes.membersTable}>
         <RolesContext.Consumer>
-          {({isMentor}) => (
-            isMentor
-              ? null
-              : <ButtonMain>
-                  <Button name='Register' handleClick={handleClickRegister} />
-                </ButtonMain>
-          )}
+          {({ isMentor }) =>
+            isMentor ? null : (
+              <ButtonMain>
+                <Button name='Register' handleClick={handleClickRegister} />
+              </ButtonMain>
+            )
+          }
         </RolesContext.Consumer>
 
         <HeaderLine>
@@ -86,53 +87,45 @@ class Members extends PureComponent {
         {members.map((member, index) => {
           return (
             <Lines key={member.userId}>
-              <Line width={3} text={index + 1} />
-              <LineLink
-                width={15}
-                text={member.name}
-                handleClick={this.handleClickDetail(member.userId)}
-              />
-              <Line width={20} text={member.direction} />
-              <Line width={20} text={member.education} />
-              <Line width={10} text={member.startDate} />
-              <Line width={7} text={member.age} />
+              <Line width={5} text={index + 1} />
+              <LineLink width={15} text={member.name} handleClick={this.handleClickDetail(member.userId)} />
+              <Line width={15} text={member.direction} />
+              <Line width={15} text={member.education} />
+              <Line width={17} text={member.startDate} />
+              <Line width={10} text={member.age} />
 
-                <ThemeContext.Consumer>
-                  {isBlack => (
-                    <ButtonsGroup>
-                      <Button color={isBlack ? color.black : color.lightBlue}>
-                        <Link to={`/users/${member.userId}/progress`} className={classes.Link}>
-                          Progress
-                        </Link>
-                      </Button>
+              <ButtonsGroup>
+                <Button color={'var(--background-table)'}>
+                  <Link to={`/users/${member.userId}/progress`} className={classes.Link}>
+                    Progress
+                  </Link>
+                </Button>
 
-                      <Button color={isBlack ? color.black : color.lightBlue}>
-                        <Link to={`/users/${member.userId}/tasks`} className={classes.Link}>
-                          Tasks
-                        </Link>
-                      </Button>
+                <Button color={'var(--background-table)'}>
+                  <Link to={`/users/${member.userId}/tasks`} className={classes.Link}>
+                    Tasks
+                  </Link>
+                </Button>
 
-                      <RolesContext.Consumer>
-                      {({isMentor}) => (
-                        isMentor
-                          ? null
-                          : <>
-                              <Button
-                                name='Edit'
-                                color={isBlack ? color.black : color.lightBlue}
-                                handleClick={this.handleClickEdit(member.userId)}
-                              />
-                              <Button
-                                name='Delete'
-                                color={isBlack ? color.darkRed : color.red}
-                                handleClick={this.handleClickDelete(member.userId)}
-                              />
-                            </>
-                      )}
-                      </RolesContext.Consumer>
-                    </ButtonsGroup>
-                  )}
-                </ThemeContext.Consumer>
+                <RolesContext.Consumer>
+                  {({ isMentor }) =>
+                    isMentor ? null : (
+                      <>
+                        <Button
+                          name='Edit'
+                          color={'var(--background-table)'}
+                          handleClick={this.handleClickEdit(member.userId)}
+                        />
+                        <Button
+                          name='Delete'
+                          color={'var(--color-button-delete)'}
+                          handleClick={this.handleClickDelete(member.userId)}
+                        />
+                      </>
+                    )
+                  }
+                </RolesContext.Consumer>
+              </ButtonsGroup>
             </Lines>
           );
         })}
@@ -141,51 +134,56 @@ class Members extends PureComponent {
   };
 
   render() {
-    const {isLoading, member, isModal, name, title, isHidden, isDisabled,
-      isRegister, isStatus, isShowStatus, statusMessage} = this.props.members;
-    const {handleClickClose} = this.props;
+    const { isLoading, member, isModal, name, title, isHidden, isDisabled, isRegister } = this.props.members;
+    const { handleClickClose } = this.props;
 
     return (
       <>
-        {
-          isLoading
-            ? this.membersTable()
-            : isModal || member
-                ? <ModalRegister
-                    name={name}
-                    title={title}
-                    handleClickClose={handleClickClose}
-                    hidden={isHidden}
-                    disabled={isDisabled}
-                    user={member}
-                    isRegister={isRegister}
-                  />
-                : <Spinner />
-        }
-        { isShowStatus ? <Status message={statusMessage} isStatus={isStatus} /> : null }
+        {isLoading ? (
+          this.membersTable()
+        ) : isModal || member ? (
+          <ModalRegister
+            name={name}
+            title={title}
+            handleClickClose={handleClickClose}
+            hidden={isHidden}
+            disabled={isDisabled}
+            user={member}
+            isRegister={isRegister}
+          />
+        ) : (
+          <Spinner />
+        )}
       </>
     );
   }
 }
 
-const mapStateToProps = state => {
-  const {isLoading, members, member, isModal, name, title, isHidden,
-    isDisabled, isRegister, isStatus, isShowStatus, statusMessage} = state;
+const mapStateToProps = (state) => {
+  const { isLoading, members, member, isModal, name, title, isHidden, isDisabled, isRegister } = state;
 
   return {
-    isLoading, members, member, isModal, name, title, isHidden,
-    isDisabled, isRegister, isStatus, isShowStatus, statusMessage
+    isLoading,
+    members,
+    member,
+    isModal,
+    name,
+    title,
+    isHidden,
+    isDisabled,
+    isRegister,
   };
-}
+};
 
-export default connect(
-  mapStateToProps,
-  {
-    getListMembers, setLoading, getMember,
-    setModal, setName, setTitle, setHidden,
-    setDisabled, setRegister, setStatus,
-    setShowStatus, setStatusMessage, getUpdatedMembers,
-    deleteMember, handleClickClose, handleClickRegister,
-    editMember, detailMember
-  }
-)(Members)
+export default connect(mapStateToProps, {
+  getListMembers,
+  getMember,
+  setEdit,
+  setDetail,
+  getUpdatedMembers,
+  deleteMember,
+  handleClickClose,
+  handleClickRegister,
+})(Members);
+
+Members.contextType = RolesContext;

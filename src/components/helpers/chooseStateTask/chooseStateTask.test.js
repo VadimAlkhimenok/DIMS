@@ -1,7 +1,7 @@
 import { chooseStateTask } from './chooseStateTask';
 
 describe('Choose state of task function', () => {
-  it ('should return chosen status of task', () => {
+  it('should return chosen status of task', () => {
     const text = 'Success';
     const active = 'Active';
     const fail = 'Fail';
@@ -13,7 +13,7 @@ describe('Choose state of task function', () => {
     expect(expected).toEqual(success);
   });
 
-  it ('should return status of task by default', () => {
+  it('should return status of task by default', () => {
     const text = 'example';
     const active = 'Active';
     const fail = 'Fail';

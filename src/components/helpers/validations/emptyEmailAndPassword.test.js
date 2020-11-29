@@ -14,4 +14,4 @@ describe('Is empty email and password function', () => {
     const expected = isEmptyEmailAndPassword(inputEmail, inputPassword);
     expect(expected).toBeFalsy();
   });
-})
+});

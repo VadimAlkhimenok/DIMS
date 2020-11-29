@@ -5,7 +5,7 @@
   left: 0;
   width: 15rem;
   height: 100%;
-  background-color: rgb(33, 35, 45);
+  background-color: var(--color-background-sidebar);
   transition: 0.6s;
   z-index: 9999;
 }
@@ -32,14 +32,6 @@
   color: #b1aeae;
 }
 
-.SidebarLogout {
-  position: absolute;
-  top: 44rem;
-  bottom: 0;
-  right: 2rem;
-  left: 0;
-}
-
 .Wrapper {
   position: absolute;
   top: 0;
@@ -50,7 +42,25 @@
   z-index: 999999;
 }
 
-.SidebarBlackTheme {
-  composes: SidebarMain;
-  background-color: #3b3b3b;
+@media screen and (max-width: 500px) {
+  .SidebarMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .SidebarAllList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .SidebarList {
+    list-style: none;
+  }
 }

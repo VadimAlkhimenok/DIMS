@@ -18,3 +18,10 @@
 .Hidden {
   display: none;
 }
+
+@media screen and (max-width: 500px) {
+  .Button {
+    width: 39px;
+    font-size: 9px;
+  }
+}

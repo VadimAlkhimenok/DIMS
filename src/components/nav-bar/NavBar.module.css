@@ -2,6 +2,8 @@
   composes: FlexCenter from '../../App.module.css';
   min-width: 25%;
   height: 100%;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .Active {
@@ -12,10 +14,10 @@
 
 .List {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   list-style: none;
-  width: 100%;
+  width: 20rem;
   height: 100%;
   margin: 0;
 }
@@ -32,4 +34,10 @@
   border-bottom: 2px solid red;
   text-decoration: none;
   color: #b9b8b8;
+}
+
+@media screen and (max-width: 500px) {
+  .Navigation {
+    display: none;
+  }
 }

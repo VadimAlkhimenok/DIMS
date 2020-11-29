@@ -3,3 +3,9 @@
   flex-wrap: wrap;
   margin-bottom: 7px;
 }
+
+@media screen and (max-width: 500px) {
+  .ButtonsGroupModal {
+    width: 10rem;
+  }
+}

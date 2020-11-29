@@ -12,4 +12,4 @@ describe('Include upper letter password function', () => {
     const expected = isPasswordIncludeUpper(input);
     expect(expected).toBeTruthy();
   });
-})
+});

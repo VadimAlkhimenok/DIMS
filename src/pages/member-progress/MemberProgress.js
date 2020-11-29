@@ -10,19 +10,17 @@ import { Spinner } from '../../components/UI/spinner/Spinner';
 import ModalCreate from '../../components/modals/modal-create/ModalCreate';
 import { getCollection, getUserOfData } from '../../components/firebase/firebaseAPI';
 import { collection } from '../../components/helpers/commonData/collections';
+import { RolesContext } from '../../context/Contexts';
 
 export default class MemberProgress extends Component {
   state = {
-    tasksProgress: null,
+    tasksProgress: [],
     isShowModalCreate: false,
     isLoading: false,
     hidden: false,
     disabled: false,
     name: '',
     userName: '',
-    isStatus: false,
-    isShowStatus: false,
-    statusMessage: '',
     task: null,
     userNameAndId: null,
   };
@@ -34,29 +32,7 @@ export default class MemberProgress extends Component {
     document.title = 'Member Progress';
   }
 
-  showError = message => {
-    this.setState({
-      isShowStatus: true,
-      statusMessage: message,
-    })
-  };
-
-  showSuccess = message => {
-    this.setState({
-      isShowStatus: true,
-      statusMessage: message,
-      isStatus: true,
-    })
-  };
-
-  resetStatus = () => {
-    this.setState({
-      isShowStatus: false,
-      statusMessage: ''
-    })
-  };
-
-  handleClickCreate = () => {
+  handleClickClose = () => {
     this.setState({
       isLoading: !this.state.isLoading,
       isShowModalCreate: !this.state.isShowModalCreate,
@@ -66,14 +42,10 @@ export default class MemberProgress extends Component {
   };
 
   handleClickDetail = (taskId) => async () => {
-    try {
-      await this.getTask(taskId);
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task of data!");
-    }
+    await this.getTask(taskId);
 
     this.setState({
-      isShowModalCreate: false,
+      isShowModalCreate: true,
       isLoading: !this.state.isLoading,
       hidden: true,
       disabled: true,
@@ -81,25 +53,29 @@ export default class MemberProgress extends Component {
     });
   };
 
-  getUserProgress = async userId => {
+  getUserProgress = async (userId) => {
     try {
       const tasksProgress = await getUserOfData(collection.track, userId);
       this.setState({
         tasksProgress,
         isLoading: !this.state.isLoading,
       });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task of progress!")
+    } catch ({ message }) {
+      const { showError } = this.context;
+      showError(message);
     }
   };
 
-  getUserNameAndId = async userId => {
+  getUserNameAndId = async (userId) => {
     try {
       let usersData = await getCollection(collection.profile);
-      const [name, id] = usersData.filter((user) => userId === user.userId).map(user => ({ name: user.name, id: user.userId }));
+      const [name, id] = usersData
+        .filter((user) => userId === user.userId)
+        .map((user) => ({ name: user.name, id: user.userId }));
       this.setState({ userNameAndId: name, id });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task of data!");
+    } catch ({ message }) {
+      const { showError } = this.context;
+      showError(message);
     }
   };
 
@@ -107,13 +83,24 @@ export default class MemberProgress extends Component {
     try {
       let [task] = await getUserOfData(collection.task, taskId, 'taskId');
       this.setState({ task });
-    } catch (e) {
-      this.showError("Something wrong! Cannot get task!");
+    } catch ({ message }) {
+      const { showError } = this.context;
+      showError(message);
     }
   };
 
   render() {
-    const { isLoading, userNameAndId, tasksProgress, isShowModalCreate, name, title, hidden, disabled, task } = this.state;
+    const {
+      isLoading,
+      userNameAndId,
+      tasksProgress,
+      isShowModalCreate,
+      name,
+      title,
+      hidden,
+      disabled,
+      task,
+    } = this.state;
 
     return isLoading ? (
       <div className={classes.MemberProgressTable}>
@@ -138,14 +125,16 @@ export default class MemberProgress extends Component {
       <ModalCreate
         name={name}
         title={title}
-        handleClickCreate={this.handleClickCreate}
+        handleClickClose={this.handleClickClose}
         hidden={hidden}
         disabled={disabled}
         task={task}
-        userName={userNameAndId}
+        userName={[userNameAndId]}
       />
     ) : (
       <Spinner />
     );
   }
 }
+
+MemberProgress.contextType = RolesContext;

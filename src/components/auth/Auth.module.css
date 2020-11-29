@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  transition: 0.6s;
 }
 
 .Auth {
@@ -10,8 +11,8 @@
   border-radius: 1rem;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
   padding: 2rem;
-  width: 30rem;
-  background-color: #fff;
+  background-color: var(--color-auth);
+  transition: 0.6s;
 }
 
 .Input {

@@ -47,3 +47,22 @@
   color: red;
   font-size: 15px;
 }
+
+@media screen and (max-width: 500px) {
+  .Input {
+    padding: 5px;
+    width: 100%;
+    font-size: 15px;
+    margin-bottom: 3px;
+  }
+  .InputMain {
+    width: 40%;
+    margin: 5px;
+  }
+  .Label {
+    font-size: 12px;
+  }
+  .Important {
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,9 @@
+.Icon {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 500px) {
+  .Icon {
+    font-size: 0.7rem;
+  }
+}

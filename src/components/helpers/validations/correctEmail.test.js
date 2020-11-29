@@ -5,11 +5,11 @@ describe('Correct email function', () => {
     const input = 'vad.alkhimenok.gmail.com';
     const expected = isCorrectEmail(input);
     expect(expected).toBeTruthy();
-  })
+  });
 
   test('should return false', () => {
     const input = 'vad.alkhimenok@gmail.com';
     const expected = isCorrectEmail(input);
     expect(expected).toBeFalsy();
-  })
-})
+  });
+});

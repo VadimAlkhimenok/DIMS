@@ -16,11 +16,11 @@ export default class SidebarSwitch extends PureComponent {
     return (
       <>
         <div className={classes.Sidebar}>
-          {
-            isOpen
-            ? <SidebarMain open={isOpen} handleClick={this.handleClickSidebarSwitch} />
-            : <BurgerIcon handleClickBurger={this.handleClickSidebarSwitch} />
-          }
+          {isOpen ? (
+            <SidebarMain open={isOpen} handleClick={this.handleClickSidebarSwitch} />
+          ) : (
+            <BurgerIcon handleClickBurger={this.handleClickSidebarSwitch} />
+          )}
         </div>
       </>
     );

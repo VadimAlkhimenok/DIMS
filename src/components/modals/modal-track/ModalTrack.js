@@ -8,11 +8,11 @@ import { ModalTemplate } from '../modal-template/ModalTemplate';
 import { color } from '../../UI/colors/colors';
 import { Textarea } from '../../textarea/Textarea';
 import { ButtonsGroupModal } from '../../UI/button-groups-modal/ButtonGroupModal';
-import { Status } from '../../UI/status/Status';
 import { isEmptyInputModal } from '../../helpers/validations/emptyInputModal';
-import { ThemeContext } from '../../../context/Contexts';
+import { RolesContext } from '../../../context/Contexts';
 import { addData, updateData } from '../../firebase/firebaseAPI';
 import { collection } from '../../helpers/commonData/collections';
+import { successResponseData } from '../../helpers/commonData/successResponseData';
 
 export default class ModalTrack extends Component {
   state = {
@@ -24,82 +24,63 @@ export default class ModalTrack extends Component {
       trackNote: '',
       userId: null,
     },
-    isStatus: false,
-    isShowStatus: false,
-    statusMessage: '',
     isErrorInput: false,
-    errorMessageInput: '',
   };
 
   componentDidMount() {
-    const { task, currentTask: {taskId, userId}, taskName } = this.props;
+    const {
+      task,
+      currentTask: { taskId, userId },
+      taskName,
+    } = this.props;
     const { trackData } = this.state;
 
     const tempTrackData = Object.assign(trackData, task);
     this.setState({ trackData: tempTrackData });
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       trackData: {
         ...prevState.trackData,
         taskId,
         userId,
-        description: taskName
-      }
-    }))
+        description: taskName,
+      },
+    }));
   }
 
-  showError = message => {
-    this.setState({
-      isShowStatus: true,
-      statusMessage: message,
-    })
-  }
-
-  showSuccess = message => {
-    this.setState({
-      isShowStatus: true,
-      statusMessage: message,
-      isStatus: true,
-    })
-  }
-
-  handleClickSubmit = async event => {
+  handleClickSubmit = async (event) => {
     event.preventDefault();
 
+    const { taskTrackId, trackDate, trackNote } = this.state.trackData;
+    const { trackData } = this.state;
+    const { handleClickTrack } = this.props;
+    const { showSuccess, showError } = this.context;
+    const { updateTrack, addTrack } = successResponseData;
+
+    if (isEmptyInputModal({ trackDate, trackNote })) {
+      this.setState({
+        isErrorInput: true,
+      });
+      showError('Fill empty field');
+      return;
+    }
+
     try {
-      const { taskTrackId, trackDate, trackNote } = this.state.trackData;
-      const { trackData } = this.state;
-      const { handleClickTrack } = this.props;
-
-      if (isEmptyInputModal({trackDate, trackNote })) {
-        this.setState({
-          isErrorInput: true,
-          errorMessageInput: 'Fill important field',
-        });
-        return;
-      }
-
       if (taskTrackId) {
-        try {
-          await updateData(taskTrackId, collection.track, trackData);
-          this.showSuccess('Success! Subtask was updated!');
-        } catch (e) {
-          this.showError("Something wrong! Subtask wasn't updated!");
-        }
+        await updateData(taskTrackId, collection.track, trackData);
+        showSuccess(updateTrack);
       } else {
-        try {
-          await addData(collection.track, trackData, 'taskTrackId');
-          this.showSuccess('Success! Subtask was added!');
-        } catch (e) {
-          this.showError("Something wrong! Subtask wasn't added!");
-        }
+        await addData(collection.track, trackData, 'taskTrackId');
+        showSuccess(addTrack);
       }
       handleClickTrack();
-    } catch (e) {
-      this.showError("Something wrong! Check input data!");
+    } catch ({ message }) {
+      const { showError } = this.context;
+      handleClickTrack();
+      showError(message);
     }
   };
 
-  handleChangeInput = ({ target: {id, value } }) => {
+  handleChangeInput = ({ target: { id, value } }) => {
     this.setState((prevState) => ({
       trackData: {
         ...prevState.trackData,
@@ -111,65 +92,52 @@ export default class ModalTrack extends Component {
 
   render() {
     const { name, title, handleClickTrack, disabled, hidden } = this.props;
-    const { trackData: { trackNote, trackDate }, errorMessageInput, isErrorInput, isShowStatus, statusMessage, isStatus } = this.state;
+    const {
+      trackData: { trackNote, trackDate },
+      isErrorInput,
+    } = this.state;
 
     return (
       <>
-        <ThemeContext.Consumer>
-          {isBlack => (
-            <ModalTemplate handleOpenCloseModal={handleClickTrack}>
-              <div className={classes.ModalTrack}>
-                <Title text={title} />
+        <ModalTemplate handleOpenCloseModal={handleClickTrack}>
+          <div className={classes.ModalTrack}>
+            <Title text={title} />
 
-                <div className={classes.Content}>
-                  <Textarea
-                    name='Note'
-                    disabled={disabled}
-                    handleChange={this.handleChangeInput}
-                    errorMessage={errorMessageInput}
-                    error={isErrorInput}
-                    value={trackNote}
-                    important={true}
-                    id={'trackNote'}
-                  />
-                  <Input
-                    name='Date'
-                    type='date'
-                    disabled={disabled}
-                    handleChange={this.handleChangeInput}
-                    errorMessage={errorMessageInput}
-                    error={isErrorInput}
-                    important={true}
-                    value={trackDate}
-                    id={'trackDate'}
-                  />
-                </div>
+            <div className={classes.Content}>
+              <Textarea
+                name='Note'
+                disabled={disabled}
+                handleChange={this.handleChangeInput}
+                error={isErrorInput}
+                value={trackNote}
+                important={true}
+                id={'trackNote'}
+              />
+              <Input
+                name='Date'
+                type='date'
+                disabled={disabled}
+                handleChange={this.handleChangeInput}
+                error={isErrorInput}
+                important={true}
+                value={trackDate}
+                id='trackDate'
+              />
+            </div>
 
-                <ButtonsGroupModal>
-                  <Button
-                    name={name}
-                    color={isBlack ? color.black : color.green}
-                    hidden={hidden}
-                    handleClick={this.handleClickSubmit}
-                  />
-                  <Button
-                    name='Back to grid'
-                    color={isBlack ? color.darkRed : color.red}
-                    handleClick={handleClickTrack}
-                  />
-                </ButtonsGroupModal>
-              </div>
-            </ModalTemplate>
-          )}
-        </ThemeContext.Consumer>
-        { isShowStatus ? <Status message={statusMessage} isStatus={isStatus} /> : null }
+            <ButtonsGroupModal>
+              <Button name={name} color={color.green} hidden={hidden} handleClick={this.handleClickSubmit} />
+              <Button name='Back' color={'var(--color-button-delete)'} handleClick={handleClickTrack} />
+            </ButtonsGroupModal>
+          </div>
+        </ModalTemplate>
       </>
-  );
+    );
   }
 }
 
 ModalTrack.defaultProps = {
-  name: 'Save changes',
+  name: 'Save',
   title: 'Edit',
   hidden: false,
   disabled: false,
@@ -178,3 +146,5 @@ ModalTrack.defaultProps = {
 ModalTrack.propTypes = {
   handleClickTrack: PropTypes.func.isRequired,
 };
+
+ModalTrack.contextType = RolesContext;

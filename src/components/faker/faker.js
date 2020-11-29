@@ -1,13 +1,6 @@
 import { db } from '../firebase/firebase';
 
-import {
-  userId,
-  taskId,
-  userProfileData,
-  taskData,
-  taskTrackData,
-  taskTrackId,
-} from './fakerDB';
+import { userId, taskId, userProfileData, taskData, taskTrackData, taskTrackId } from './fakerDB';
 
 const createUserProfile = () => {
   db.collection('UserProfile')
