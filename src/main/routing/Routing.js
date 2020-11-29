@@ -10,6 +10,7 @@ import MembersTrack from '../../pages/members-track/MemberTrack';
 import { About } from '../../pages/about/About';
 import Auth from '../../components/auth/Auth';
 import { MemberTasks } from '../../pages/members-tasks/MemberTasks';
+import { ResetPassword } from '../../components/auth/reset-password/ResetPassword';
 
 export const Routing = (login, setLogin, getLoginRole) => {
   if (login) {
@@ -53,6 +54,7 @@ export const Routing = (login, setLogin, getLoginRole) => {
           path='/login'
           render={(props) => <Auth {...props} setLogin={setLogin} getLoginRole={getLoginRole} />}
         />
+        <Route path='/reset' render={(props) => <ResetPassword {...props} />} />
         <Redirect from='/' to='/login' />
       </Switch>
     </div>

@@ -41,7 +41,7 @@ export default class App extends Component {
       isUser: false,
       userId: null,
       roleEmail: null,
-      login: true,
+      login: false,
       message: '',
       isSuccess: false,
       isError: false,
@@ -81,7 +81,7 @@ export default class App extends Component {
         <RolesContext.Provider value={this.state}>
           <LoginContext.Provider value={login}>
             <div className={classes.App}>
-              <Header user={roleEmail} setLogout={this.handleLogOut} setTheme={this.setTheme} />
+              <Header user={roleEmail} setLogout={this.handleLogOut} />
               {routes}
               {isError ? <Status message={message} isError={isError} /> : null}
               {isSuccess ? <Status message={message} /> : null}

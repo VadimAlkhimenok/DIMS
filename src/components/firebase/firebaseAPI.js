@@ -73,7 +73,7 @@ export const registerUser = async (email, userData, name) => {
     email,
     name,
     password: `${name.toUpperCase()}${faker.random.number()}`,
-    message: 'You can live this password or change them in email: DIMS-change-password"',
+    message: 'Do not answer for this message.',
     link: process.env.REACT_APP_LINK_PROJECT,
   };
 
@@ -82,4 +82,8 @@ export const registerUser = async (email, userData, name) => {
     await addData(collection.profile, userData, 'userId'),
     await emailjs.send(REACT_APP_EMAIL_SERVICE_ID, REACT_APP_EMAIL_TEMPLATE_ID, sendData, REACT_APP_EMAIL_USER_ID),
   ]).catch((error) => error);
+};
+
+export const resetPassword = async (email) => {
+  await firebase.auth().sendPasswordResetEmail(email, null);
 };

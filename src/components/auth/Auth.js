@@ -23,7 +23,7 @@ export default class Auth extends PureComponent {
     isErrorEmail: false,
     isErrorPassword: false,
     hasError: false,
-    disabled: false,
+    disabled: true,
     isValid: false,
   };
 
@@ -33,6 +33,7 @@ export default class Auth extends PureComponent {
       errorEmail: '',
       isErrorEmail: false,
       isShowStatus: false,
+      disabled: false,
     });
   };
 
@@ -42,6 +43,7 @@ export default class Auth extends PureComponent {
       errorPassword: '',
       isErrorPassword: false,
       isShowStatus: false,
+      disabled: false,
     });
   };
 
@@ -172,7 +174,7 @@ export default class Auth extends PureComponent {
                     id='password'
                     placeholder='Password'
                     onChange={this.handleChangePassword}
-                    disabled={disabled}
+                    // disabled={disabled}
                   />
                   <div className={classes.Error}>{errorPassword}</div>
                 </div>
@@ -183,7 +185,7 @@ export default class Auth extends PureComponent {
                   Confirm
                 </button>
 
-                <LinkTemplate text='Forgot password?' />
+                <LinkTemplate text='Forgot password?' link='/reset' />
 
                 <div className='d-flex justify-content-space-around align-items-center'>
                   <Icon handleClick={this.loginWithGoogle} icon={faGoogle} />
