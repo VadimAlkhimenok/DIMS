@@ -1,32 +1,50 @@
-## The link to principal idea of design [mockup](https://symu.co/freebies/templates-4/merkury-dashboard-psd-template/). **You do not have to follow it, just use it as a guide**
+<h1 align="center">Welcome to Dev Incubator Management System 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="yes" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="https://github.com/VadimAlkhimenok?tab=repositories" target="_blank">
+    <img alt="License: Copyright © 2020." src="https://img.shields.io/badge/License-Copyright © 2020 Vadim Alkhimenok.-yellow.svg" />
+  </a>
+</p>
 
-## _In **[Wiki-UI](https://github.com/Dev-incubator/Wiki-UI)** you can find all other guides regarding project structure, plan and etc._
+> This is system for getting tasks and tracking time. There are several user roles in the Dev Incubator Management System.
 
-## How to work with git in project [Git workflow](https://github.com/Dev-incubator/Wiki-UI/blob/master/Git%20workflow.md)
+### 🏠 [Homepage](https://github.com/VadimAlkhimenok/DIMS)
 
-## use only npm-package manager
+## Install
 
-### Available Scripts
+```sh
+npm install
+```
 
-#### `npm run start`
+## Usage
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+npm run start
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Run tests
 
-#### `npm run test`
+```sh
+npm run test
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Author
 
-#### `npm run build`
+👤 **Vadim Alkhimenok <vad.alkhimenok@gmail.com>**
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Github: [@VadimAlkhimenok](https://github.com/VadimAlkhimenok)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## 🤝 Contributing
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/VadimAlkhimenok?tab=repositories).
+
+## Show your support
+
+Give a \* if this project helped you!
+
+## 📝 License
+
+Copyright © 2020 [Vadim Alkhimenok](https://github.com/VadimAlkhimenok).

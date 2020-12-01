@@ -2,7 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.AddedTasks {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 80%;
+  margin-bottom: 10px;
+}
+
+.Title {
+  font-weight: bold;
+  color: #204c4c;
+  padding: 0;
+  margin: 0;
+}
+
+.User {
+  padding: 0;
+  margin: 0;
 }
 
 @media screen and (max-width: 500px) {

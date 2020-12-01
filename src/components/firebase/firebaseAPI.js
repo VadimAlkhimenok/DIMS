@@ -29,6 +29,28 @@ export const deleteData = (collection, id) => {
 };
 
 export const addData = (collection, data, nameId) => {
+  data.userNames.map((user) => {
+    const generateId = `${faker.random.number()}`;
+
+    return db
+      .collection(collection)
+      .doc(generateId)
+      .set({ ...data, userName: user.value, userId: user.id, [nameId]: generateId })
+      .catch((error) => error);
+  });
+};
+
+export const addDataTrack = (collection, data, nameId) => {
+  const generateId = `${faker.random.number()}`;
+
+  return db
+    .collection(collection)
+    .doc(generateId)
+    .set({ ...data, [nameId]: generateId })
+    .catch((error) => error);
+};
+
+export const addDataUser = (collection, data, nameId) => {
   const generateId = `${faker.random.number()}`;
 
   return db
@@ -79,11 +101,24 @@ export const registerUser = async (email, userData, name) => {
 
   return Promise.all([
     await firebase.auth().createUserWithEmailAndPassword(email, sendData.password),
-    await addData(collection.profile, userData, 'userId'),
+    await addDataUser(collection.profile, userData, 'userId'),
     await emailjs.send(REACT_APP_EMAIL_SERVICE_ID, REACT_APP_EMAIL_TEMPLATE_ID, sendData, REACT_APP_EMAIL_USER_ID),
   ]).catch((error) => error);
 };
 
 export const resetPassword = async (email) => {
   await firebase.auth().sendPasswordResetEmail(email, null);
+};
+
+export const getUserId = async (email, collection) => {
+  return db
+    .collection(collection)
+    .where('email', '==', email)
+    .get()
+    .then((info) => info.docs.map((info) => ({ ...info.data() })))
+    .then((user) => {
+      const [{ userId }] = user;
+      return userId;
+    })
+    .catch((error) => error);
 };

@@ -17,6 +17,9 @@ import { RolesContext } from '../../../context/Contexts';
 import { collection } from '../../helpers/commonData/collections';
 import { successResponseData } from '../../helpers/commonData/successResponseData';
 
+let userNames = [];
+let foundUser = false;
+
 export default class ModalCreate extends Component {
   state = {
     taskData: {
@@ -24,6 +27,7 @@ export default class ModalCreate extends Component {
       description: '',
       start: '',
       userName: '',
+      userNames: [],
       userId: null,
       state: 'Active',
     },
@@ -44,6 +48,8 @@ export default class ModalCreate extends Component {
 
     const { updateTask, addTask } = successResponseData;
     const { showSuccess } = this.context;
+    this.setState({ userData: { userNames: [] } });
+    userNames = [];
 
     try {
       const { taskId, state, ...task } = this.state.taskData;
@@ -84,13 +90,28 @@ export default class ModalCreate extends Component {
   };
 
   handleChangeSelect = ({ target: { value, selectedIndex, childNodes } }) => {
+    const { showError } = this.context;
     let id = childNodes[selectedIndex].id;
+
+    for (let i = 0; i < userNames.length; i++) {
+      if (userNames[i].id === id) {
+        foundUser = true;
+      }
+    }
+
+    if (foundUser) {
+      showError('Erorr! User already got this task!');
+      foundUser = false;
+    } else {
+      userNames.push({ value, id });
+    }
 
     this.setState((prevState) => {
       return {
         taskData: {
           ...prevState.taskData,
           userName: value,
+          userNames,
           userId: id,
         },
       };
@@ -154,6 +175,18 @@ export default class ModalCreate extends Component {
                 />
               }
             </InputsGroup>
+
+            <div className={classes.AddedTasks}>
+              <div className={classes.Title}>Add task for:&nbsp;</div>
+              {this.state.taskData.userNames.map((user) => {
+                return (
+                  <span key={user.id} className={classes.User}>
+                    {' '}
+                    {user.value}&sbquo;&nbsp;
+                  </span>
+                );
+              })}
+            </div>
 
             <ButtonsGroupModal>
               <Button name={name} color={color.green} hidden={hidden} handleClick={this.handleClickSubmit} />

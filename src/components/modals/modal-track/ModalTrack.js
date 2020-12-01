@@ -10,7 +10,7 @@ import { Textarea } from '../../textarea/Textarea';
 import { ButtonsGroupModal } from '../../UI/button-groups-modal/ButtonGroupModal';
 import { isEmptyInputModal } from '../../helpers/validations/emptyInputModal';
 import { RolesContext } from '../../../context/Contexts';
-import { addData, updateData } from '../../firebase/firebaseAPI';
+import { addDataTrack, updateData } from '../../firebase/firebaseAPI';
 import { collection } from '../../helpers/commonData/collections';
 import { successResponseData } from '../../helpers/commonData/successResponseData';
 
@@ -69,7 +69,7 @@ export default class ModalTrack extends Component {
         await updateData(taskTrackId, collection.track, trackData);
         showSuccess(updateTrack);
       } else {
-        await addData(collection.track, trackData, 'taskTrackId');
+        await addDataTrack(collection.track, trackData, 'taskTrackId');
         showSuccess(addTrack);
       }
       handleClickTrack();

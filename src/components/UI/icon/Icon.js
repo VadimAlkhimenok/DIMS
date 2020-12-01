@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classes from './Icon.module.css';
 
 export const Icon = ({ href, icon, handleClick }) => (
-  <a href={href} target='_blank' rel='noopener noreferrer' onClick={handleClick} className={classes.Icon}>
+  <a href={href} onClick={handleClick} className={classes.Icon}>
     <FontAwesomeIcon size='2x' icon={icon} />
   </a>
 );

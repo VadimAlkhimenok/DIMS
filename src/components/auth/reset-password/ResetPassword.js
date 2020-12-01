@@ -15,10 +15,14 @@ export const ResetPassword = () => {
     if (isCorrectEmail(email)) {
       showError('Error! Input correct email!');
     } else {
-      await resetPassword(email);
-      setEmail('');
-      setDisabled(true);
-      showSuccess('Success! Check your email!');
+      try {
+        await resetPassword(email);
+        setEmail('');
+        setDisabled(true);
+        showSuccess('Success! Check your email!');
+      } catch ({ message }) {
+        showError(message);
+      }
     }
   };
 

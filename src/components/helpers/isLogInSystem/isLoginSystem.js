@@ -7,8 +7,15 @@ export const getWhoLoginSystem = async (email, adminEmail, mentorEmail, admin, m
   } else if (email === mentorEmail) {
     return { role: mentor, roleEmail: email };
   } else {
-    const [{ userId }] = await getCollection(collection.profile).then((users) =>
-      users.filter((user) => user.email === email),
+    let userId;
+    await getCollection(collection.profile).then((users) =>
+      users.map((user) => {
+        if (user.email === email) {
+          userId = user.userId;
+          return { role: user, roleEmail: email, userId };
+        }
+        return { role: user, roleEmail: email, userId };
+      }),
     );
     return { role: user, roleEmail: email, userId };
   }

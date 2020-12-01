@@ -9,10 +9,10 @@ import { linkForAuth } from '../helpers/commonData/config';
 import { collection } from '../helpers/commonData/collections';
 import { validationAuthForm } from '../helpers/validationAuthForm/validationAuthForm';
 import { getWhoLoginSystem } from '../helpers/isLogInSystem/isLoginSystem';
-import { Icon } from '../UI/icon/Icon';
 import { successResponseData } from '../helpers/commonData/successResponseData';
-import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { LinkTemplate } from '../link/LinkTemplate';
+import { Icon } from '../UI/icon/Icon';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 export default class Auth extends PureComponent {
   state = {
@@ -88,59 +88,36 @@ export default class Auth extends PureComponent {
     }
   };
 
-  loginWithGoogle = async (event) => {
-    try {
-      event.preventDefault();
-      const googleProvider = new firebase.auth.GoogleAuthProvider();
-      await firebase.auth().signInWithPopup(googleProvider);
-    } catch ({
-      response: {
-        data: {
-          error: { message },
-        },
-      },
-    }) {
-      const { showError } = this.context;
-      showError(message);
-    }
-  };
-
-  loginWithFacebook = async (event) => {
-    try {
-      event.preventDefault();
-      const facebookProvider = new firebase.auth.FacebookAuthProvider();
-      await firebase.auth().signInWithPopup(facebookProvider);
-    } catch ({
-      response: {
-        data: {
-          error: { message },
-        },
-      },
-    }) {
-      const { showError } = this.context;
-      showError(message);
-    }
-  };
-
-  loginWithGitHub = async (event) => {
-    try {
-      event.preventDefault();
-      const githubProvider = new firebase.auth.GithubAuthProvider();
-      await firebase.auth().signInWithPopup(githubProvider);
-    } catch ({
-      response: {
-        data: {
-          error: { message },
-        },
-      },
-    }) {
-      const { showError } = this.context;
-      showError(message);
-    }
-  };
-
   handleSubmit = (event) => {
     event.preventDefault();
+  };
+
+  logInWithGoogle = async (event) => {
+    event.preventDefault();
+
+    try {
+      const googleProvider = new firebase.auth.GoogleAuthProvider();
+      await firebase.auth().signInWithPopup(googleProvider);
+      const curUser = firebase.auth().currentUser;
+
+      const [admin, mentor, user] = Object.keys(this.context);
+      const [{ adminEmail, mentorEmail }] = await getCollection(collection.roles);
+      const currentUser = await getWhoLoginSystem(curUser.email, adminEmail, mentorEmail, admin, mentor, user);
+
+      const { showSuccess } = this.context;
+      this.props.getLoginRole(currentUser);
+      this.props.setLogin();
+      showSuccess(successResponseData.login);
+    } catch ({
+      response: {
+        data: {
+          error: { message },
+        },
+      },
+    }) {
+      const { showError } = this.context;
+      showError(message);
+    }
   };
 
   authTable = () => {
@@ -174,7 +151,6 @@ export default class Auth extends PureComponent {
                     id='password'
                     placeholder='Password'
                     onChange={this.handleChangePassword}
-                    // disabled={disabled}
                   />
                   <div className={classes.Error}>{errorPassword}</div>
                 </div>
@@ -184,13 +160,9 @@ export default class Auth extends PureComponent {
                 <button type='submit' className='btn btn-success' onClick={this.handleClickAuth} disabled={disabled}>
                   Confirm
                 </button>
-
                 <LinkTemplate text='Forgot password?' link='/reset' />
-
-                <div className='d-flex justify-content-space-around align-items-center'>
-                  <Icon handleClick={this.loginWithGoogle} icon={faGoogle} />
-                  <Icon handleClick={this.loginWithFacebook} icon={faFacebook} />
-                  <Icon handleClick={this.loginWithGitHub} icon={faGithub} />
+                <div className='d-flex ml-2'>
+                  <Icon handleClick={this.logInWithGoogle} icon={faGoogle} />
                 </div>
               </div>
             </form>

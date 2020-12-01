@@ -8,6 +8,7 @@ import { LoginContext, RolesContext } from './context/Contexts';
 import { Status } from './components/UI/status/Status';
 import styled from '@emotion/styled';
 // import { fakerDataBase } from './components/faker/faker';
+import * as firebase from 'firebase';
 
 // fakerDataBase()
 
@@ -36,12 +37,12 @@ export default class App extends Component {
     };
 
     this.state = {
-      isAdmin: false,
+      isAdmin: true,
       isMentor: false,
       isUser: false,
       userId: null,
       roleEmail: null,
-      login: false,
+      login: true,
       message: '',
       isSuccess: false,
       isError: false,
@@ -54,13 +55,21 @@ export default class App extends Component {
     this.setState({ login: !this.state.login });
   };
 
-  handleLogOut = () => {
-    this.setState({
-      login: false,
-      isAdmin: false,
-      isMentor: false,
-      isUser: false,
-    });
+  handleLogOut = async () => {
+    await firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        this.setState({
+          login: false,
+          isAdmin: false,
+          isMentor: false,
+          isUser: false,
+        });
+      })
+      .catch(function(error) {
+        return error;
+      });
   };
 
   getLoginRole = ({ role, roleEmail, userId = null }) => {

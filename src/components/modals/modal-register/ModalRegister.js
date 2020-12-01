@@ -38,6 +38,7 @@ export default class ModalRegister extends Component {
       sex: '',
     },
     isErrorInput: false,
+    btnDisabled: true,
   };
 
   componentDidMount() {
@@ -50,6 +51,8 @@ export default class ModalRegister extends Component {
 
   handleClickSubmit = async (event) => {
     event.preventDefault();
+
+    this.setState({ btnDisabled: true });
 
     const { name, email, userId } = this.state.userProfileData;
     const { userProfileData } = this.state;
@@ -100,6 +103,7 @@ export default class ModalRegister extends Component {
         [id]: value,
       },
       isErrorInput: false,
+      btnDisabled: false,
     }));
   };
 
@@ -109,6 +113,7 @@ export default class ModalRegister extends Component {
         ...prevState.userProfileData,
         sex: value,
       },
+      btnDisabled: false,
     }));
   };
 
@@ -119,12 +124,13 @@ export default class ModalRegister extends Component {
           ...prevState.userProfileData,
           direction: value,
         },
+        btnDisabled: false,
       };
     });
   };
 
   render() {
-    const { isErrorInput, userProfileData } = this.state;
+    const { isErrorInput, userProfileData, btnDisabled } = this.state;
     const { disabled, title, name, hidden, handleClickClose } = this.props;
 
     return (
@@ -170,8 +176,19 @@ export default class ModalRegister extends Component {
             </InputsGroup>
 
             <ButtonsGroupModal>
-              <Button name={name} color={color.green} hidden={hidden} handleClick={this.handleClickSubmit} />
-              <Button name='Back' color={'var(--color-button-delete)'} handleClick={handleClickClose} />
+              <Button
+                name={name}
+                color={color.green}
+                hidden={hidden}
+                handleClick={this.handleClickSubmit}
+                disabled={btnDisabled}
+              />
+              <Button
+                name='Back'
+                color={'var(--color-button-delete)'}
+                handleClick={handleClickClose}
+                disabled={btnDisabled}
+              />
             </ButtonsGroupModal>
           </div>
         </ModalTemplate>
